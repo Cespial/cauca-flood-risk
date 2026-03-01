@@ -13,10 +13,10 @@ load_dotenv()
 
 # --- GEE Initialization ---
 try:
-    ee.Initialize(project=os.getenv('GEE_PROJECT_ID', 'ee-flood-risk-cauca'))
+    ee.Initialize(project=os.getenv('GEE_PROJECT_ID', 'ee-maestria-tesis'))
 except Exception:
     ee.Authenticate()
-    ee.Initialize(project=os.getenv('GEE_PROJECT_ID', 'ee-flood-risk-cauca'))
+    ee.Initialize(project=os.getenv('GEE_PROJECT_ID', 'ee-maestria-tesis'))
 
 # ============================================================================
 # STUDY AREA: Department of Cauca, Colombia
@@ -404,7 +404,7 @@ EXPORT_SCALE = 30
 DRIVE_EXPORT_FOLDER = 'cauca_flood_risk'
 
 # GEE asset path for susceptibility map
-GEE_SUSCEPTIBILITY_ASSET = 'projects/ee-flood-risk-cauca/assets/cauca_flood_susceptibility_ensemble'
+GEE_SUSCEPTIBILITY_ASSET = 'projects/ee-maestria-tesis/assets/cauca_flood_susceptibility_ensemble'
 
 # Project paths
 import pathlib

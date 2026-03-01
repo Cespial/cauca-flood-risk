@@ -300,28 +300,29 @@ def create_cauca_subregions() -> None:
         "Centro": [
             "Popayán", "Cajibío", "ElTambo", "Morales",
             "Piendamó", "Puracé", "Silvia", "Timbío",
+            "Totoró",
         ],
         "Norte": [
             "BuenosAires", "Caloto", "Corinto", "Jambaló",
             "Miranda", "Padilla", "PuertoTejada",
-            "SantanderDeQuilichao", "Suárez", "Toribío",
-            "Caldono",
+            "SantanderdeQuilichao", "Suárez", "Toribío",
+            "Caldonó", "VillaRica",
         ],
         "Oriente": [
             "Inzá", "Páez",
         ],
         "Pacífico": [
-            "LópezDeMicay", "Timbiquí", "Guapi",
+            "LópezdeMicay", "Timbiquí", "Guapí",
         ],
         "Sur": [
             "Argelia", "Balboa", "Bolívar", "Patía",
-            "Florencia", "Mercaderes",
+            "Florencia", "Mercaderes", "Sucre",
         ],
         "Macizo": [
             "Sotará", "LaVega", "Almaguer", "LaSierra", "Rosas",
         ],
         "Bota Caucana": [
-            "SanSebastián", "SantaRosa",
+            "SanSebastián", "SantaRosa", "Piamonte",
         ],
     }
 
