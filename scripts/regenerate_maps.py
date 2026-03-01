@@ -121,7 +121,7 @@ def add_north_arrow(ax, x=0.95, y=0.95, size=15):
     )
 
 
-def add_scalebar_wgs84(ax, lat_center=7.0, length_km=50):
+def add_scalebar_wgs84(ax, lat_center=2.3, length_km=50):
     """
     Add a manual scale bar on a WGS84 map.
     At this latitude, 1 degree longitude ~ 111 * cos(lat) km.
@@ -153,16 +153,17 @@ def add_scalebar_wgs84(ax, lat_center=7.0, length_km=50):
 def fig02_sar_water_detection():
     """
     Download real Sentinel-1 SAR data for a known flood event.
-    Bajo Cauca region (Caucasia-Nechí-El Bagre) — most flood-prone area.
+    Norte subregion (Puerto Tejada-Caloto-Miranda) — most flood-prone area
+    in the flat Cauca River valley.
     Pre-flood: Jul-Aug 2024 (dry), During-flood: Oct-Nov 2024 (wet).
     """
     print("Generating Figure 2: SAR water detection (REAL DATA)...")
     set_publication_style()
 
-    # Focus on Bajo Cauca / Nechí / lower Cauca River — most flood-prone
-    # Tighter region for more detail
-    flood_region = ee.Geometry.Rectangle([-75.35, 7.55, -74.65, 8.35])
-    flood_bbox = [-75.35, 7.55, -74.65, 8.35]
+    # Focus on Norte subregion / flat Cauca River valley — most flood-prone
+    # Puerto Tejada - Caloto - Miranda area
+    flood_region = ee.Geometry.Rectangle([-76.60, 2.85, -76.15, 3.35])
+    flood_bbox = [-76.60, 2.85, -76.15, 3.35]
 
     s1 = (
         ee.ImageCollection('COPERNICUS/S1_GRD')
@@ -219,7 +220,7 @@ def fig02_sar_water_detection():
                    frameon=True, framealpha=0.9)
 
     fig.suptitle(
-        "Sentinel-1 SAR Flood Detection — Bajo Cauca, Cauca",
+        "Sentinel-1 SAR Flood Detection — Norte del Cauca",
         fontsize=10, fontweight="bold", y=1.02,
     )
     fig.tight_layout()
@@ -286,7 +287,7 @@ def fig03_jrc_water_occurrence():
 
     ax.set_title("JRC Global Surface Water Occurrence, Cauca", fontsize=10)
     add_north_arrow(ax)
-    add_scalebar_wgs84(ax, lat_center=7.0, length_km=50)
+    add_scalebar_wgs84(ax, lat_center=2.3, length_km=50)
     ax.set_axis_off()
 
     fig.tight_layout()
@@ -351,7 +352,7 @@ def fig05_hand_map():
 
     ax.set_title("HAND Flood Susceptibility, Cauca", fontsize=10)
     add_north_arrow(ax)
-    add_scalebar_wgs84(ax, lat_center=7.0, length_km=50)
+    add_scalebar_wgs84(ax, lat_center=2.3, length_km=50)
     ax.set_axis_off()
 
     fig.tight_layout()
@@ -420,7 +421,7 @@ def fig08_susceptibility_map():
 
     ax.set_title("Flood Susceptibility (Ensemble Model)", fontsize=10)
     add_north_arrow(ax)
-    add_scalebar_wgs84(ax, lat_center=7.0, length_km=50)
+    add_scalebar_wgs84(ax, lat_center=2.3, length_km=50)
     ax.set_axis_off()
 
     fig.tight_layout()

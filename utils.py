@@ -32,7 +32,7 @@ OVERLEAF_TABLES = OVERLEAF_DIR / "tables"
 LOGS_DIR = PROJECT_ROOT / "logs"
 
 # Expected Cauca area in km2 (DANE official)
-CAUCA_AREA_KM2 = 63_612.0
+CAUCA_AREA_KM2 = 29_308.0
 CAUCA_AREA_TOLERANCE = 0.05  # 5% tolerance for area validation
 
 # EPSG codes
@@ -127,7 +127,7 @@ def load_cauca_boundary(source: str = "gadm") -> gpd.GeoDataFrame:
 
 def load_municipalities(source: str = "gadm") -> gpd.GeoDataFrame:
     """
-    Load Cauca municipality polygons (125 municipalities).
+    Load Cauca municipality polygons (42 municipalities).
 
     Parameters
     ----------
@@ -139,7 +139,7 @@ def load_municipalities(source: str = "gadm") -> gpd.GeoDataFrame:
     gpd.GeoDataFrame
     """
     paths = {
-        "gadm": BOUNDARIES_DIR / "cauca_municipalities_125_GADM41.geojson",
+        "gadm": BOUNDARIES_DIR / "cauca_municipalities_42_GADM41.geojson",
         "geoboundaries": BOUNDARIES_DIR / "cauca_municipalities_geoBoundaries_simplified.geojson",
     }
     path = paths.get(source)
@@ -152,8 +152,8 @@ def load_municipalities(source: str = "gadm") -> gpd.GeoDataFrame:
 
 
 def load_subregions() -> gpd.GeoDataFrame:
-    """Load the 9 official subregions of Cauca."""
-    path = BOUNDARIES_DIR / "cauca_9_subregions.geojson"
+    """Load the 7 official subregions of Cauca."""
+    path = BOUNDARIES_DIR / "cauca_7_subregions.geojson"
     if not path.exists():
         raise FileNotFoundError(f"Subregions file not found: {path}")
     return gpd.read_file(path)
@@ -217,7 +217,7 @@ def compute_area_km2(gdf: gpd.GeoDataFrame) -> float:
 def validate_cauca_area(gdf: gpd.GeoDataFrame, tolerance: float = 0.05) -> bool:
     """
     Check whether the total area of gdf is close to the expected
-    Cauca area (63,612 km2) within the given fractional tolerance.
+    Cauca area (29,308 km2) within the given fractional tolerance.
     """
     area = compute_area_km2(gdf)
     expected = CAUCA_AREA_KM2

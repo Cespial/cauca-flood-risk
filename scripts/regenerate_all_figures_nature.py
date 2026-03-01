@@ -188,18 +188,18 @@ def load_boundary():
 
 
 def load_municipalities():
-    return gpd.read_file(BOUNDARIES_DIR / "cauca_municipalities_125_GADM41.geojson")
+    return gpd.read_file(BOUNDARIES_DIR / "cauca_municipalities_42_GADM41.geojson")
 
 
 def load_subregions():
-    return gpd.read_file(BOUNDARIES_DIR / "cauca_9_subregions.geojson")
+    return gpd.read_file(BOUNDARIES_DIR / "cauca_7_subregions.geojson")
 
 
 # ============================================================================
 # Map helpers — professional cartographic elements
 # ============================================================================
 
-def add_scalebar(ax, lat=7.0, length_km=50, y_frac=0.04, x_frac=0.05):
+def add_scalebar(ax, lat=2.3, length_km=50, y_frac=0.04, x_frac=0.05):
     km_per_deg = 111.32 * math.cos(math.radians(lat))
     deg_len = length_km / km_per_deg
     xl, xr = ax.get_xlim()

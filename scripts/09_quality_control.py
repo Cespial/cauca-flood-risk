@@ -241,7 +241,7 @@ def validate_areas() -> List[QCResult]:
     Tests:
     - GADM department boundary area
     - Sum of 42 municipality areas
-    - Sum of 9 subregion areas
+    - Sum of 7 subregion areas
     - Individual municipality areas are positive and reasonable
 
     Returns
@@ -352,7 +352,7 @@ def validate_areas() -> List[QCResult]:
             category="area_validation",
             passed=within_tol,
             message=(
-                f"Sum of 9 subregions: {sub_total:,.1f} km2 "
+                f"Sum of 7 subregions: {sub_total:,.1f} km2 "
                 f"(diff = {diff_pct:+.2f}%)"
             ),
             severity="WARNING" if not within_tol else "INFO",
@@ -679,9 +679,9 @@ def verify_municipal_stats() -> List[QCResult]:
         r = QCResult(
             check_name="subregion_count",
             category="municipal_stats",
-            passed=(n_sub == 9),
-            message=f"Subregion count: {n_sub} (expected 9)",
-            severity="ERROR" if n_sub != 9 else "INFO",
+            passed=(n_sub == 7),
+            message=f"Subregion count: {n_sub} (expected 7)",
+            severity="ERROR" if n_sub != 7 else "INFO",
         )
         results.append(r)
         _add_result(r)

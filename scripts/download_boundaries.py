@@ -6,8 +6,8 @@ Downloads and processes geographic boundary data for the Cauca Flood Risk
 Research Project.
 
 This script downloads from authoritative public sources:
-  - Administrative boundaries (department + 125 municipalities)
-  - 9 official subregions of Cauca
+  - Administrative boundaries (department + 42 municipalities)
+  - 7 official subregions of Cauca
   - River basins / cuencas (HydroBASINS levels 5 and 7)
   - Natural Earth department-level context
   - Notes on additional data sources requiring manual access
@@ -141,7 +141,7 @@ def extract_cauca_gadm() -> None:
     """
     Extract Cauca-specific GeoJSON files from GADM Colombia data:
       - Department boundary (level 1)
-      - All 125 municipalities (level 2)
+      - All 42 municipalities (level 2)
     """
     gpd = import_geopandas()
     print("\n[2] Extracting Cauca boundaries from GADM data")
@@ -161,9 +161,9 @@ def extract_cauca_gadm() -> None:
         else:
             print("  WARNING: Cauca not found in GADM L1 data")
 
-    # -- Cauca 125 municipalities --
+    # -- Cauca 42 municipalities --
     l2_path = BOUNDARIES_DIR / "gadm41_COL_2.json"
-    muns_out = BOUNDARIES_DIR / "cauca_municipalities_125_GADM41.geojson"
+    muns_out = BOUNDARIES_DIR / "cauca_municipalities_42_GADM41.geojson"
     if not muns_out.exists() and l2_path.exists():
         with open(l2_path) as fh:
             data = json.load(fh)
@@ -274,71 +274,54 @@ def download_natural_earth() -> None:
 
 def create_cauca_subregions() -> None:
     """
-    Build the 9 official subregions of Cauca by dissolving GADM
+    Build the 7 official subregions of Cauca by dissolving GADM
     municipality polygons. Subregion classification follows Gobernacion
     de Cauca / DANE official groupings.
     """
-    print("\n[5] Creating Cauca 9 Subregion Boundaries")
+    print("\n[5] Creating Cauca 7 Subregion Boundaries")
 
-    out_path = BOUNDARIES_DIR / "cauca_9_subregions.geojson"
+    out_path = BOUNDARIES_DIR / "cauca_7_subregions.geojson"
     if out_path.exists():
         print(f"  -> Already exists: {out_path.name}")
         return
 
-    muns_path = BOUNDARIES_DIR / "cauca_municipalities_125_GADM41.geojson"
+    muns_path = BOUNDARIES_DIR / "cauca_municipalities_42_GADM41.geojson"
     if not muns_path.exists():
         print("  WARNING: GADM municipalities file not found. Run extract_cauca_gadm() first.")
         return
 
     gpd = import_geopandas()
 
-    # GADM uses concatenated names without spaces (e.g., "LaEstrella")
+    # GADM uses concatenated names (e.g., "SantanderDeQuilichao")
     # Mapping: subregion name -> list of GADM NAME_2 values
+    # NOTE: Some GADM names may use accents or concatenated forms.
+    # Verify against actual GADM data and adjust as needed.
     SUBREGIONS = {
-        "Valle de Aburrá": [
-            "Barbosa", "Girardota", "Copacabana", "Bello", "Medellín",
-            "Itagüí", "Envigado", "Sabaneta", "LaEstrella", "Caldas",
-        ],
-        "Oriente": [
-            "Abejorral", "Alejandría", "Argelia", "ElCarmendeViboral", "Cocorná",
-            "Concepción", "Peñol", "Retiro", "Santuario", "Granada",
-            "Guarné", "Guatapé", "LaCeja", "LaUnión", "Marinilla",
-            "Nariño", "Rionegro", "SanCarlos", "SanFrancisco",
-            "SanLuís", "SanRafael", "SanVicente", "Sonsón",
-        ],
-        "Suroeste": [
-            "Amagá", "Andes", "Angelópolis", "Betania", "Betulia",
-            "Caicedo", "Caramanta", "CiudadBolívar", "Concordia", "Fredonia",
-            "Hispania", "Jardín", "Jericó", "LaPintada", "Montebello",
-            "Pueblorrico", "Salgar", "SantaBárbara", "Támesis", "Tarso",
-            "Titiribí", "Urrao", "Valparaíso", "Venecia",
+        "Centro": [
+            "Popayán", "Cajibío", "ElTambo", "Morales",
+            "Piendamó", "Puracé", "Silvia", "Timbío",
         ],
         "Norte": [
-            "Angostura", "Belmira", "Briceño", "Campamento", "CarolinadelPrincipe",
-            "DonMatías", "Entrerríos", "GómezPlata", "Guadalupe", "Ituango",
-            "SanAndrésdeCuerquia", "SanJosédelaMontaña", "SanPedrodelosMilagros",
-            "SantaRosadeOsos", "Toledo", "Valdivia", "Yarumal",
+            "BuenosAires", "Caloto", "Corinto", "Jambaló",
+            "Miranda", "Padilla", "PuertoTejada",
+            "SantanderDeQuilichao", "Suárez", "Toribío",
+            "Caldono",
         ],
-        "Nordeste": [
-            "Amalfi", "Anorí", "Cisneros", "Remedios", "SanRoque",
-            "SantoDomingo", "Segovia", "Vegachí", "Yalí", "Yolombó",
+        "Oriente": [
+            "Inzá", "Páez",
         ],
-        "Occidente": [
-            "Abriaquí", "Anzá", "Armenia", "Buriticá", "Cañasgordas",
-            "Dabeiba", "Ebéjico", "Frontino", "Giraldo", "Heliconia",
-            "Liborina", "Olaya", "Pequé", "Sabanalarga", "SanJerónimo",
-            "SantafédeCauca", "ElSopetrán", "Uramita",
+        "Pacífico": [
+            "LópezDeMicay", "Timbiquí", "Guapi",
         ],
-        "Magdalena Medio": [
-            "Caracolí", "Maceo", "PuertoBerrío", "PuertoNare", "PuertoTriunfo", "Yondó",
+        "Sur": [
+            "Argelia", "Balboa", "Bolívar", "Patía",
+            "Florencia", "Mercaderes",
         ],
-        "Bajo Cauca": [
-            "Cáceres", "Caucasia", "ElBagre", "Nechí", "Tarazá", "Zaragoza",
+        "Macizo": [
+            "Sotará", "LaVega", "Almaguer", "LaSierra", "Rosas",
         ],
-        "Urabá": [
-            "Apartadó", "Arboletes", "Carepa", "Chigorodó", "Murindó",
-            "Mutatá", "Necoclí", "SanJuandeUrabá", "SanPedrodeUrabá",
-            "Turbo", "VigíadelFuerte",
+        "Bota Caucana": [
+            "SanSebastián", "SantaRosa",
         ],
     }
 
@@ -377,7 +360,7 @@ def create_cauca_subregions() -> None:
         json.dump(fc, fh, ensure_ascii=False)
 
     total = sum(f["properties"]["n_municipalities_matched"] for f in features)
-    print(f"  -> Saved {out_path.name} (9 subregions, {total} municipalities matched)")
+    print(f"  -> Saved {out_path.name} (7 subregions, {total} municipalities matched)")
 
 
 # ---------------------------------------------------------------------------
@@ -464,7 +447,7 @@ def download_osm_data() -> None:
     print("")
     print("    For Cauca-only OSM extract (recommended):")
     print("      Use BBBike custom extract: https://extract.bbbike.org/")
-    print("      Bounding box: W=-77.15, S=5.41, E=-73.87, N=8.89")
+    print("      Bounding box: W=-77.95, S=0.95, E=-75.75, N=3.35")
     print("      Or use Overpass API to query by boundary:")
     print("      https://overpass-turbo.eu/")
 
@@ -518,11 +501,11 @@ def download_flood_hazard_info() -> None:
             "notes": "Basic cartography at 1:500,000 scale (rivers, roads, admin)",
         },
         {
-            "name": "Corcauca – Cuencas (ArcGIS REST)",
-            "url": "https://geografico.corcauca.gov.co/arcgis/rest/services/Corcauca_Geoconsulta/MapServer/6",
-            "format": "ArcGIS REST / GeoJSON",
-            "access": "REST API (connection issues observed)",
-            "notes": "Watershed delineation (Otto Pfafstetter NSS3 level) for Corcauca jurisdiction",
+            "name": "CRC – Corporacion Autonoma Regional del Cauca",
+            "url": "https://web2018.crc.gov.co/",
+            "format": "ArcGIS REST / PDF reports",
+            "access": "Web portal and GIS services",
+            "notes": "Regional environmental authority for Cauca. Flood defense, river monitoring, watershed management.",
         },
         {
             "name": "Think Hazard – Colombia Flood Risk",

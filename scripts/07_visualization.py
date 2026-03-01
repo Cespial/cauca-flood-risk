@@ -11,7 +11,7 @@ Generates 12 figures at 600 DPI (PDF + PNG) following journal formatting:
   - Scale bars, north arrows, and proper CRS on all maps
 
 Figures:
-  Fig 1  - Study area map (Cauca, 9 subregions, rivers, elevation)
+  Fig 1  - Study area map (Cauca, 7 subregions, rivers, elevation)
   Fig 2  - Sentinel-1 SAR water detection example (before/after flood)
   Fig 3  - JRC Global Surface Water occurrence map
   Fig 4  - Flood frequency map (multi-temporal SAR composite)
@@ -243,7 +243,7 @@ def _load_or_synthesize_df(
 
 def fig01_study_area() -> None:
     """
-    Study area map showing Cauca department with 9 subregions,
+    Study area map showing Cauca department with 7 subregions,
     river basins, and elevation context.
     """
     logger.info("Generating Figure 1: Study area map...")
